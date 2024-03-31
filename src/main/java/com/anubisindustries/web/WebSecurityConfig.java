@@ -10,6 +10,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 /**
  *
@@ -23,12 +24,12 @@ public class WebSecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests((requests) -> requests
-                .requestMatchers("/").permitAll()
+                .requestMatchers(new AntPathRequestMatcher("/images/**")).permitAll()
                 .anyRequest().authenticated()
                 )
                 .formLogin((form) -> form
                 .loginPage("/login")
-                .defaultSuccessUrl("/home", true)
+                .defaultSuccessUrl("/", true)
                 .permitAll()
                 )
                 .logout((logout) -> logout.permitAll());
@@ -38,8 +39,8 @@ public class WebSecurityConfig {
 
     @Bean
     public InMemoryUserDetailsManager userDetailsService() {
-        UserDetails user1 = User.withUsername("user1")
-                .password(passwordEncoder().encode("user1Pass"))
+        UserDetails user1 = User.withUsername("a")
+                .password(passwordEncoder().encode("a"))
                 .roles("USER")
                 .build();
         UserDetails user2 = User.withUsername("user2")
