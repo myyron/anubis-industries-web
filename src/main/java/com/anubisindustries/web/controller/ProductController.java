@@ -17,6 +17,11 @@ public class ProductController {
 
     Logger logger = LoggerFactory.getLogger(ProductController.class);
 
+//    @Autowired
+//    private PasswordEncoder passwordEncoder;
+//    
+//    @Autowired
+//    private UserRepository userRepository;
     @GetMapping("/product/list")
     public List<ProductDto> getProductList() {
         List<ProductDto> result = new ArrayList<>();
@@ -29,6 +34,9 @@ public class ProductController {
         result.add(dto1);
         result.add(dto2);
         logger.info("getProductList - {}", result.size());
+
+//        User user = new User("kuku", passwordEncoder.encode(""));
+//        userRepository.save(user);
         return result;
     }
 }
