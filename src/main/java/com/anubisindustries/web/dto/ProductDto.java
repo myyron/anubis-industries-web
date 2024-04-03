@@ -6,8 +6,17 @@ package com.anubisindustries.web.dto;
  */
 public class ProductDto {
 
+    private String alias;
     private String name;
     private String variation;
+
+    public String getAlias() {
+        return alias;
+    }
+
+    public void setAlias(String alias) {
+        this.alias = alias;
+    }
 
     public String getName() {
         return name;
