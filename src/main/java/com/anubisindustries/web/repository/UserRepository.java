@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
  * @author altrax
  */
 @Repository
-public interface UserRepository extends JpaRepository<User, Long> {
+public interface UserRepository extends JpaRepository<User, Integer> {
 
     Optional<User> findByUsername(String username);
 

@@ -1,12 +1,17 @@
 package com.anubisindustries.web.controller;
 
 import com.anubisindustries.web.dto.ProductDto;
+import com.anubisindustries.web.model.Product;
+import com.anubisindustries.web.service.IProductService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.ArrayList;
 import java.util.List;
+import org.dozer.DozerBeanMapper;
+import org.dozer.Mapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,24 +29,25 @@ public class ProductController {
 
     Logger logger = LoggerFactory.getLogger(ProductController.class);
 
+    @Autowired
+    private IProductService productService;
+
     @GetMapping("/list")
     public List<ProductDto> getProductList() {
+        Mapper mapper = new DozerBeanMapper();
         List<ProductDto> result = new ArrayList<>();
-        ProductDto dto1 = new ProductDto();
-        dto1.setName("R1");
-        dto1.setVariation("orange");
-        ProductDto dto2 = new ProductDto();
-        dto2.setName("R1");
-        dto2.setVariation("black");
-        result.add(dto1);
-        result.add(dto2);
-        logger.info("getProductList - {}", result.size());
+        for (Product product : productService.getProducts()) {
+            result.add(mapper.map(product, ProductDto.class));
+        }
+        logger.info("product list - {}", result.size());
         return result;
     }
-    
+
     @PostMapping("/add")
     public ResponseEntity<?> addProduct(@RequestBody ProductDto productDto) throws JsonProcessingException {
         logger.info(new ObjectMapper().writeValueAsString(productDto));
-        return ResponseEntity.ok("User registered successfully!");
+        Product product = new DozerBeanMapper().map(productDto, Product.class);
+        productService.save(product);
+        return ResponseEntity.ok(productService.save(product));
     }
 }

@@ -1,5 +1,7 @@
 package com.anubisindustries.web.dto;
 
+import java.util.Set;
+
 /**
  *
  * @author altrax
@@ -8,7 +10,15 @@ public class ProductDto {
 
     private String alias;
     private String name;
-    private String variation;
+    private Set<VariationDto> variation;
+
+    public Set<VariationDto> getVariation() {
+        return variation;
+    }
+
+    public void setVariation(Set<VariationDto> variation) {
+        this.variation = variation;
+    }
 
     public String getAlias() {
         return alias;
@@ -24,13 +34,5 @@ public class ProductDto {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getVariation() {
-        return variation;
-    }
-
-    public void setVariation(String variation) {
-        this.variation = variation;
     }
 }

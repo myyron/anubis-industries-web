@@ -1,41 +1,65 @@
 class Product {
 
     constructor() {
-        const table = new DataTable('#table-product', {
+        const productTable = new DataTable('#productTable', {
             ajax: {
                 url: '/product/list',
                 dataSrc: ''
             },
             columns: [
+                {data: 'alias'},
                 {data: 'name'},
-                {data: 'variation'}
+                {data: 'variation[,].name'}
             ]
         });
 
         $("#addVariation").on("click", function () {
-            $("#variationList").append('<div class="row mb-3"><div class="col"><label for="inputVariationName2" class="col-form-label">Variation Name2</label><input type="text" id="inputVariationName2" name="variationName2" class="form-control"></div></div>');
+            $("#variationList").append('<div class="row mb-3"><div class="col"><input type="text" name="variation.name" class="form-control"></div></div>');
         });
 
-        $("#saveNewProduct").on("click", function () {
+        $("#saveNewProductButton").on("click", function () {
             $.ajax({
                 url: "/product/add",
                 contentType: "application/json",
                 type: "post",
                 dataType: "json",
-                data: convertSerializedFormToJson($("#addProduct").serialize()),
+                data: createDtoFromForm(document.querySelectorAll('#addProductForm input')),
                 success: function (data) {
-                    // ... do something with the data...
+                    $("#addProductModal").modal("hide");
+                    productTable.ajax.reload();
                 }
             });
         });
 
-        function convertSerializedFormToJson(serializedForm) {
-            let data = serializedForm.split("&");
-            let obj = {};
-            for (let key in data) {
-                obj[data[key].split("=")[0]] = data[key].split("=")[1];
+        function createDtoFromForm(elements) {
+            const data = {};
+            for (let i = 0; i < elements.length; i++) {
+                let el = elements[i];
+                let val = el.value;
+                let fullname = el.getAttribute("name");
+                if (!fullname)
+                    continue;
+
+                if (fullname === "alias") {
+                    data[fullname] = val;
+                    continue;
+                }
+                if (fullname === "name") {
+                    data[fullname] = val;
+                    continue;
+                }
+                if (fullname === "variation.name") {
+                    if (!data["variation"]) {
+                        data["variation"] = [];
+                    }
+                    let obj = {"name": val};
+                    data["variation"].push(obj);
+                    continue;
+                }
             }
-            return JSON.stringify(obj);
+            let result = JSON.stringify(data);
+            console.log(result);
+            return result;
         }
     }
 }
