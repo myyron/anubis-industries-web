@@ -17,18 +17,46 @@ class Product {
             $("#variationList").append('<div class="row mb-3"><div class="col"><input type="text" name="variation.name" class="form-control"></div></div>');
         });
 
+        $("#deleteProduct").on("click", function () {
+            $.ajax({
+                url: "/product/delete",
+                contentType: "application/json",
+                type: "post",
+                dataType: "json",
+                data: productTable.row('.selected').data().alias
+            }).always(function () {
+                productTable.ajax.reload();
+            });
+        });
+
         $("#saveNewProductButton").on("click", function () {
             $.ajax({
                 url: "/product/add",
                 contentType: "application/json",
                 type: "post",
                 dataType: "json",
-                data: createDtoFromForm(document.querySelectorAll('#addProductForm input')),
-                success: function (data) {
-                    $("#addProductModal").modal("hide");
-                    productTable.ajax.reload();
-                }
+                data: createDtoFromForm(document.querySelectorAll('#addProductForm input'))
+            }).always(function () {
+                $("#addProductModal").modal("hide");
+                productTable.ajax.reload();
+                $("#addProductForm")[0].reset();
+                $("#variationList").empty();
             });
+        });
+
+        productTable.on('click', 'tbody tr', (e) => {
+            let classList = e.currentTarget.classList;
+
+            if (classList.contains('selected')) {
+                classList.remove('selected');
+                $("#editProduct").addClass("disabled");
+                $("#deleteProduct").addClass("disabled");
+            } else {
+                productTable.rows('.selected').nodes().each((row) => row.classList.remove('selected'));
+                classList.add('selected');
+                $("#editProduct").removeClass("disabled");
+                $("#deleteProduct").removeClass("disabled");
+            }
         });
 
         function createDtoFromForm(elements) {

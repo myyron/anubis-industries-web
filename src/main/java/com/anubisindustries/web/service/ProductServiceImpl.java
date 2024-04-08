@@ -22,6 +22,12 @@ public class ProductServiceImpl implements IProductService{
     public Integer save(Product product) {
         return productRepository.save(product).getId();
     }
+    
+    @Override
+    @Transactional
+    public void delete(String alias) {
+        productRepository.deleteByAlias(alias);
+    }
 
     @Override
     public List<Product> getProducts() {

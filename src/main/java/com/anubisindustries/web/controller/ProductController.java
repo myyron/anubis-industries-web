@@ -45,9 +45,16 @@ public class ProductController {
 
     @PostMapping("/add")
     public ResponseEntity<?> addProduct(@RequestBody ProductDto productDto) throws JsonProcessingException {
-        logger.info(new ObjectMapper().writeValueAsString(productDto));
+        logger.info("add product - {}", new ObjectMapper().writeValueAsString(productDto));
         Product product = new DozerBeanMapper().map(productDto, Product.class);
         productService.save(product);
         return ResponseEntity.ok(productService.save(product));
+    }
+    
+    @PostMapping("/delete")
+    public ResponseEntity<?> deleteProduct(@RequestBody String alias) throws JsonProcessingException {
+        logger.info("delete product - {}", alias);
+        productService.delete(alias);
+        return ResponseEntity.ok("Product deleted successfully.");
     }
 }
