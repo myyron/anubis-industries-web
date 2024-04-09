@@ -31,13 +31,13 @@ public class ProductServiceImpl implements IProductService {
 
     @Override
     @Transactional
-    public void delete(String alias) {
-        productRepository.deleteByAlias(alias);
+    public void deactivate(String alias) {
+        productRepository.deactivate(alias);
     }
 
     @Override
     public List<Product> getProducts() {
-        return productRepository.findAll();
+        return productRepository.findAllByEnabled(1);
     }
 
 }

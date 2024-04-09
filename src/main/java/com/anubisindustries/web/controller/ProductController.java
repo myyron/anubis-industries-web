@@ -54,7 +54,7 @@ public class ProductController {
     @PostMapping("/delete")
     public ResponseEntity<?> deleteProduct(@RequestBody String alias) throws JsonProcessingException {
         logger.info("delete product - {}", alias);
-        productService.delete(alias);
+        productService.deactivate(alias);
         return ResponseEntity.ok("Product deleted successfully.");
     }
 }

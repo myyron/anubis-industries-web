@@ -11,7 +11,7 @@ public interface IProductService {
     
     Integer save(Product product);
     
-    void delete(String alias);
+    void deactivate(String alias);
     
     List<Product> getProducts();
 }

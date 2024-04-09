@@ -24,7 +24,7 @@ import java.util.Set;
         uniqueConstraints = {
             @UniqueConstraint(columnNames = "alias")
         })
-public class Product {
+public class Product extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

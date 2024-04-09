@@ -14,7 +14,7 @@ import jakarta.validation.constraints.Size;
  */
 @Entity
 @Table(name = "variation")
-public class Variation {
+public class Variation extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
