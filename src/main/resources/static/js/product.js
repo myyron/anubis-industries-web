@@ -18,14 +18,31 @@ class Product {
         });
 
         $("#deleteProduct").on("click", function () {
-            $.ajax({
-                url: "/product/delete",
-                contentType: "application/json",
-                type: "post",
-                dataType: "json",
-                data: productTable.row('.selected').data().alias
-            }).always(function () {
-                productTable.ajax.reload();
+            bootbox.confirm({
+                title: 'Delete product?',
+                message: 'This action will delete the product and all associated data with it.',
+                buttons: {
+                    cancel: {
+                        label: '<i class="fa fa-times"></i> Cancel'
+                    },
+                    confirm: {
+                        label: '<i class="fa fa-check"></i> Confirm'
+                    }
+                },
+                callback: function (result) {
+                    if (result) {
+                        $.ajax({
+                            url: "/product/delete",
+                            contentType: "application/json",
+                            type: "post",
+                            dataType: "json",
+                            data: productTable.row('.selected').data().alias
+                        }).always(function () {
+                            productTable.ajax.reload();
+                            $("#deleteProduct").addClass("disabled");
+                        });
+                    }
+                }
             });
         });
 
@@ -46,7 +63,6 @@ class Product {
 
         productTable.on('click', 'tbody tr', (e) => {
             let classList = e.currentTarget.classList;
-
             if (classList.contains('selected')) {
                 classList.remove('selected');
                 $("#editProduct").addClass("disabled");

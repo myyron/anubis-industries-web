@@ -1,14 +1,17 @@
 package com.anubisindustries.web.model;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.NotNull;
 import java.time.Instant;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.SourceType;
 
 /**
  *
@@ -17,26 +20,24 @@ import org.hibernate.annotations.CreationTimestamp;
 @Entity
 @Table(name = "activity_log")
 public class ActivityLog {
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @CreationTimestamp
+    @CreationTimestamp(source = SourceType.DB)
     private Instant timestamp;
 
-    @NotBlank
-    @Size(max = 20)
+    @Enumerated(EnumType.STRING)
     private ETransactionType transactionType;
 
     @NotBlank
-    private Integer userId;
+    private String username;
 
-    @NotBlank
-    @Size(max = 20)
-    private String tableName;
+    @Enumerated(EnumType.STRING)
+    private ETableName tableName;
 
-    @NotBlank
+    @NotNull
     private Integer recordId;
 
     public Integer getId() {
@@ -63,19 +64,19 @@ public class ActivityLog {
         this.transactionType = transactionType;
     }
 
-    public Integer getUserId() {
-        return userId;
+    public String getUsername() {
+        return username;
     }
 
-    public void setUserId(Integer userId) {
-        this.userId = userId;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
-    public String getTableName() {
+    public ETableName getTableName() {
         return tableName;
     }
 
-    public void setTableName(String tableName) {
+    public void setTableName(ETableName tableName) {
         this.tableName = tableName;
     }
 

@@ -48,7 +48,7 @@ public class ProductController {
         logger.info("add product - {}", new ObjectMapper().writeValueAsString(productDto));
         Product product = new DozerBeanMapper().map(productDto, Product.class);
         productService.save(product);
-        return ResponseEntity.ok(productService.save(product));
+        return ResponseEntity.ok("Product added successfully.");
     }
     
     @PostMapping("/delete")
