@@ -7,6 +7,6 @@ import com.anubisindustries.web.model.ETransactionType;
  * @author altrax
  */
 public interface IActivityLogService {
-    
-    Integer save(Object object, ETransactionType transactionType);    
+
+    Integer save(Object object, ETransactionType transactionType);
 }
